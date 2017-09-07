@@ -12,22 +12,39 @@ import MapKit
 class TheatersMapViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
+    lazy var locationManager = CLLocationManager()
     
     var currentElement: String!
     var theater: Theater!
     var theaters: [Theater] = []
-    
-    
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
+        requestUserLocationAuthorization()
         mapView.delegate = self
         loadXML()
         
-        print(theaters.count)
-        
     }
+    
+    func requestUserLocationAuthorization(){
+        if CLLocationManager.locationServicesEnabled(){
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.allowsBackgroundLocationUpdates = true
+            locationManager.pausesLocationUpdatesAutomatically = true
+            switch CLLocationManager.authorizationStatus() {
+            case .authorizedAlways, .authorizedWhenInUse:
+                print("Autorizado")
+            case .denied:
+                print("Negado")
+            case .notDetermined:
+                locationManager.requestAlwaysAuthorization()
+            case .restricted:
+                print("Não habilitado")
+            }
+        }
+    }
+    
     func addTheares(){
         for theater in theaters{
             let coordinate = CLLocationCoordinate2D(latitude: theater.latitude, longitude: theater.longitude)
@@ -113,3 +130,20 @@ extension TheatersMapViewController: MKMapViewDelegate{
         return annovationView
     }
 }
+
+extension TheatersMapViewController: CLLocationManagerDelegate{
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedAlways, .authorizedWhenInUse:
+            mapView.showsUserLocation = true
+        default:
+            break
+        }
+    }
+    
+    func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
+        print("Velocidade do usuário: ",userLocation.location!.speed)
+        
+    }
+}
+
