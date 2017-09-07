@@ -12,6 +12,7 @@ import MapKit
 class TheatersMapViewController: UIViewController {
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var searchBar: UISearchBar!
     lazy var locationManager = CLLocationManager()
     
     var currentElement: String!
@@ -22,6 +23,7 @@ class TheatersMapViewController: UIViewController {
         super.viewDidLoad()
         requestUserLocationAuthorization()
         mapView.delegate = self
+        searchBar.delegate = self
         loadXML()
         
     }
@@ -143,7 +145,17 @@ extension TheatersMapViewController: CLLocationManagerDelegate{
     
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         print("Velocidade do usuário: ",userLocation.location!.speed)
+        let region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 100, 100)
+        mapView.setRegion(region, animated: true)
         
     }
 }
-
+extension TheatersMapViewController: UISearchBarDelegate{
+    
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+    }
+    
+    
+}

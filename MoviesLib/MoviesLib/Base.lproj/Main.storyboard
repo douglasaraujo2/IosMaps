@@ -304,6 +304,7 @@
                     <tabBarItem key="tabBarItem" title="Cinemas" image="theaters" id="Wkx-7T-0Z7"/>
                     <connections>
                         <outlet property="mapView" destination="eS3-74-jqI" id="ZWm-3C-nR2"/>
+                        <outlet property="searchBar" destination="Dov-Nh-t36" id="Jlf-wI-bwz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gLs-L0-5r0" userLabel="First Responder" sceneMemberID="firstResponder"/>
